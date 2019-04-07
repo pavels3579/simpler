@@ -22,6 +22,14 @@ module Simpler
       @response.finish
     end
 
+    def headers(key, value)
+      @response.set_header(key, value)
+    end
+
+    def status(number)
+      @response.status = number
+    end
+
     private
 
     def extract_name
