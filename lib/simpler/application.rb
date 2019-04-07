@@ -34,6 +34,9 @@ module Simpler
       controller = route.controller.new(env)
       action = route.action
 
+      env['simpler.request_params'] = route.route_params(env['PATH_INFO'])
+      env['simpler.request_params'].merge!(Rack::Request.new(env).params)
+
       make_response(controller, action)
     end
 
