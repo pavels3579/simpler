@@ -8,7 +8,6 @@ module Simpler
     CONTENT_TYPES = { plain: 'text/plain', html: 'text/html' }.freeze
 
     def initialize(env)
-      #@headers = []
       @name = extract_name
       @request = Rack::Request.new(env)
       @response = Rack::Response.new

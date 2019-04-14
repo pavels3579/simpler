@@ -9,14 +9,14 @@ class AppLogger
 
   def call(env)
     status, headers, response = @app.call(env)
-    log_message = write_log_message(env, status, headers)
+    log_message = format_log_message(env, status, headers)
     @logger.info(log_message)
     [status, headers, response]
   end
 
   private
 
-  def write_log_message(env, status, headers)
+  def format_log_message(env, status, headers)
     output = ["\n"]
     output << "Request: #{env['REQUEST_METHOD']} #{env['REQUEST_URI']}"
     output << "Handler: #{env['simpler.controller'].class}##{env['simpler.action']}"
