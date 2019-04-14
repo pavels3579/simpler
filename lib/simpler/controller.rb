@@ -5,10 +5,13 @@ module Simpler
 
     attr_reader :name, :request, :response
 
+    CONTENT_TYPES = { plain: 'text/plain', html: 'text/html' }.freeze
+
     def initialize(env)
       @name = extract_name
       @request = Rack::Request.new(env)
       @response = Rack::Response.new
+
     end
 
     def make_response(action)
@@ -22,6 +25,14 @@ module Simpler
       @response.finish
     end
 
+    def headers(key, value)
+      @response.set_header(key, value)
+    end
+
+    def status(number)
+      @response.status = number
+    end
+
     private
 
     def extract_name
@@ -29,7 +40,11 @@ module Simpler
     end
 
     def set_default_headers
-      @response['Content-Type'] = 'text/html'
+      @response['Content-Type'] ||= CONTENT_TYPES[render_content_type]
+    end
+
+    def render_content_type
+      @request.env['simpler.template'].nil? ? :html : @request.env['simpler.template'].keys.first
     end
 
     def write_response
